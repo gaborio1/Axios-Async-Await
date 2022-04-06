@@ -61,6 +61,7 @@ function getTodos() {
 
 //🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦 ASYNC/AWAIT🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦
 
+/*
 async function getTodosAA() {
     console.log('GET Request - Async/Await');
 
@@ -77,9 +78,50 @@ async function getTodosAA() {
     // console.log(data);
 
 }
+*/
+
+// AXIOS
+// const url = 'https://jsonplaceholder.typicode.com/todos?_limit=3'
+
+// axios.get(url)
+//     .then(res => {
+//         console.log("response:", res.data);
+//     })
+//     .catch(err => {
+//         console.log("error:", err);
+//     });
 
 
 
+// ASYNC/AWAIT
+
+// 1️⃣
+// ❗️❗️❗️ CAN SAVE URL IN VARIABLE, BUT IT CANNOT BE NAMED url ❗️❗️❗️
+// const address = 'https://jsonplaceholder.typicode.com/todos?_limit=4';
+
+const getTodosAA = async url => {
+    try {
+        // 1️⃣
+        // ❗️❗️❗️ USE address VARIABLE WITH axios HERE ❗️❗️❗️
+        // const res = await axios(address);
+
+        // 2️⃣
+        // OR, USE URL STRING ONLY:
+        // const res = await axios('https://jsonplaceholder.typicode.com/todos?_limit=4'); // .get IS OPTIONAL ❗️❗️❗️
+        const res = await axios.get('https://jsonplaceholder.typicode.com/todos?_limit=4');
+
+        console.log("response.data:", res.data);
+
+        // const res2 = res.data
+
+        // console.log("response2.data:", res2.data);
+
+        showOutput(res);
+
+    } catch (err) {
+        console.log("error:", err)
+    }
+}
 
 // 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩
 // POST REQUEST
@@ -127,13 +169,20 @@ function addTodo() {
 async function addTodoAA() {
     console.log('POST Request - Async/Await');
 
-    const res = await axios.post('https://jsonplaceholder.typicode.com/todos', {
-        title: 'New Todo',
-        completed: false
-    });
+    try {
+        const res = await axios.post('https://jsonplaceholder.typicode.com/todos', {
+            // const res = await axios.post('https://jsonplaceholder.TEST-INVALID-PATH', {
+            title: 'New Todo',
+            completed: false
+        });
 
-    console.log(res);
-    showOutput(res);
+        console.log(res);
+        showOutput(res);
+    } catch (err) {
+        console.log("error:", err)
+    }
+
+
 }
 
 // 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩
@@ -171,6 +220,47 @@ function updateTodo() {
         .catch(err => console.error(err));
 
 }
+
+//🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦 ASYNC/AWAIT🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦
+
+async function updateTodoAA() {
+    console.log('PUT/PATCH Request');
+
+    try {
+        const res = await axios
+            .patch('https://jsonplaceholder.typicode.com/todos/1', {
+                // .patch('https://jsonplaceholder.TEST-INVALID-PATH', {
+                title: 'Updated Todo',
+                completed: true
+            })
+
+        console.log(res);
+        showOutput(res);
+    } catch (err) {
+        console.log("error:", err)
+    }
+}
+
+/*
+ERROR LOGS:
+
+PUT/PATCH Request
+main.js:429 From Interceptor: PATCH request sent to https://jsonplaceholder.TEST-INVALID-PATH at 1649271737856
+main.js:226 error: Error: Network Error
+    at e.exports (spread.js:25:1)
+    at XMLHttpRequest.d.onerror (spread.js:25:1)
+spread.js:25          PATCH https://jsonplaceholder.test-invalid-path/ net::ERR_NAME_NOT_RESOLVED
+(anonymous) @ spread.js:25
+e.exports @ spread.js:25
+e.exports @ spread.js:25
+Promise.then (async)
+r.request @ spread.js:25
+r.<computed> @ spread.js:25
+(anonymous) @ axios.min.js:477
+updateTodoAA @ main.js:218
+
+*/
+
 
 // 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩
 // DELETE REQUEST
@@ -441,8 +531,10 @@ document.getElementById('getAA').addEventListener('click', getTodosAA);
 // POST
 document.getElementById('post').addEventListener('click', addTodo);
 document.getElementById('postAA').addEventListener('click', addTodoAA);
-
+// PUT/PATCH
 document.getElementById('update').addEventListener('click', updateTodo);
+document.getElementById('updateAA').addEventListener('click', updateTodoAA);
+
 document.getElementById('delete').addEventListener('click', removeTodo);
 document.getElementById('sim').addEventListener('click', getData);
 document.getElementById('headers').addEventListener('click', customHeaders);
